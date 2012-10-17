@@ -1,7 +1,7 @@
 <link href="css/resources.css" rel="stylesheet" type="text/css" />
 
-<script type="text/javascript" src="jquery-1.8.1.min.js"></script>
-<script type="text/javascript" src="popup.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="js/popup.js"></script>
 
 <?php
 
