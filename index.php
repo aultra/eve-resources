@@ -4,8 +4,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Phoenix Legion Resources Calculator</title>
         <?php
-            require_once('class.Resources.inc');
-            require_once('class.EveOreDB.inc');
+            if (!file_exists('includes/class.EveOreDB.inc')) {
+                die("class.EveOreDB.inc must be created from class.EveOreDB.inc prior to this software working.");
+            }
+            require_once('includes/class.Resources.inc');
+            require_once('includes/class.EveOreDB.inc');
         ?>
     </head>
     <body>
@@ -13,7 +16,13 @@
             $resources = new Resources();
             $resources->loadResources();
             
-            //$resources->updateResources();
+            if (!file_exists('last_updated') || (filemtime('last_updated') < (time()-3600))) {
+                echo "<!-- Updating database -->";
+                $resources->updateResources();
+                touch('last_updated');
+            } else {
+                echo "<!-- Database last updated ".round((time()-filemtime('last_updated'))/60)." minutes ago. -->";
+            }
             
             $resources->display();
         ?>

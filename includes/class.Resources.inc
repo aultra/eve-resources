@@ -141,7 +141,7 @@ class Resources {
         if(!$this->isloaded) $this->loadResources ();
        
         $items = implode(',', array_keys($this->_resource_id_index));
-        $systems = array_keys($this->_markets);
+        $systems = implode(',', array_keys($this->_markets));
         
         
         
@@ -153,8 +153,11 @@ class Resources {
             'buysell' => 'a'
         );
         
+        
         $html = new HttpRequest($query);
         $html->setQueryData($query_fields);
+        
+        //echo "<pre>".print_r($html, TRUE)."</pre>";
         
         $result = $html->send()->getBody();
         
