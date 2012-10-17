@@ -1,0 +1,82 @@
+/* CSS Document */
+
+#customize {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	border: solid;
+	border-width: thick;
+	width: 800px;
+	border-color: #880000;	
+}
+
+#customize tr {
+	border-style:solid;
+	border-width: thin;
+	border-spacing: 0px;
+	border-color: #880000;
+}
+
+#customize th {
+	border-style:solid;
+	border-width: thin;
+	border-color: #880000;
+	border-spacing: 0px;
+	text-align: center;
+	background-color: #880000;
+	color: #FFFFFF;
+}
+
+#customize td {
+	border: dotted;
+	border-width: thin;
+	border-color: #880000;
+	border-spacing: 0px;
+	text-align: center;
+	width: 33%;
+}
+
+#data {
+	border:solid; 
+	border-width:thick; 
+	border-spacing: 0px; 
+	margin-left:auto; 
+	margin-right:auto;
+}
+
+#data tr {
+	border-style:solid;
+	border-width:thin;
+	border-spacing: 0px;
+}
+
+#data th {
+	border-style:solid; 
+	border-width:thin; 
+	text-align:center; 
+	background-color:#000000; 
+	color:#FFFFFF; 
+	border-spacing: 0px;
+}
+
+#data td {
+	
+}
+
+#data input {
+	width: 50px;
+	text-align: right;
+}
+
+#pup {
+  position:absolute;
+  z-index:200; /* aaaalways on top*/
+  padding: 3px;
+  margin-left: 10px;
+  margin-top: 5px;
+  width: 250px;
+  border: 1px solid black;
+  background-color: #777;
+  color: white;
+  font-size: 0.95em;
+}

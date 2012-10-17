@@ -1,0 +1,46 @@
+/* 
+    Document   : resources
+    Created on : Oct 16, 2012, 4:04:10 PM
+    Author     : jrandrew
+    Description:
+        Stylesheet for resources includes to display properly.
+
+*/
+
+#resourcesTable {
+    width: 90%;
+    max-width: 90%;
+    text-align: center;
+}
+
+#resourcesTable tr td {
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+    width: 100%;
+}
+
+#resourcesTable .resourceType {
+    width: 100%;
+}
+
+#resourcesTable .resourceCell {
+    width: auto;
+}
+
+#resourcesTable .resourceGroupTable {
+    width: 100%;
+}
+
+#resourcesTable .resourceCellTable {
+    border: solid;
+    border-width: 2px;
+    border-color: black;
+    width: 100%;
+}
+
+#resourcesTable .resourceCellTable th {
+    background-color: black;
+    color: white;
+
+}
