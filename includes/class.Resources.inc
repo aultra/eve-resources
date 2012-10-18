@@ -97,7 +97,7 @@ class Resources {
     /**
      * This function loads all the resources from the MySQL database.
      */
-    public function loadResources() {
+    public function loadResources($allowupdate=TRUE) {
         $eveOreDB = EveOreDB::getInstance();
         
         $eveOre = $eveOreDB->getConnection();
@@ -111,6 +111,12 @@ class Resources {
         }
         
         $this->isloaded = TRUE;
+        if ((!file_exists('last_updated') || (filemtime('last_updated') < (time()-3600))) && $allowupdate) {
+            echo "<!-- Updating database -->";
+            $this->updateResources();
+        } else {
+            echo "<!-- Database last updated ".round((time()-filemtime('last_updated'))/60)." minutes ago. -->";
+        }
     }
     
     /**
@@ -143,8 +149,6 @@ class Resources {
         $items = implode(',', array_keys($this->_resource_id_index));
         $systems = implode(',', array_keys($this->_markets));
         
-        
-        
         $query = "http://api.eve-marketdata.com/api/item_prices2.json";
         $query_fields = array (
             'char_name' => 'Azam Azara',
@@ -153,11 +157,8 @@ class Resources {
             'buysell' => 'a'
         );
         
-        
         $html = new HttpRequest($query);
         $html->setQueryData($query_fields);
-        
-        //echo "<pre>".print_r($html, TRUE)."</pre>";
         
         $result = $html->send()->getBody();
         
@@ -179,8 +180,10 @@ class Resources {
             }
             $this->_resource_id_index[(int)$data['typeID']][$system][$buysell] = $data['price'];
         }
+        touch('last_updated');
+
         $this->saveResources();
-        $this->loadResources();
+        $this->loadResources(FALSE);
     }
     
     /**

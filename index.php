@@ -16,14 +16,6 @@
             $resources = new Resources();
             $resources->loadResources();
             
-            if (!file_exists('last_updated') || (filemtime('last_updated') < (time()-3600))) {
-                echo "<!-- Updating database -->";
-                $resources->updateResources();
-                touch('last_updated');
-            } else {
-                echo "<!-- Database last updated ".round((time()-filemtime('last_updated'))/60)." minutes ago. -->";
-            }
-            
             $resources->display();
         ?>
     </body>
