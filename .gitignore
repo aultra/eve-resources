@@ -1,6 +1,6 @@
 # Ignore configuration file #
 #############################
-class.EveOreDB.inc
+config.php
 nbproject
 last_updated
 /config.php
