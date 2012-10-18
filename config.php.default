@@ -1,0 +1,9 @@
+<?php
+
+class config {
+    public $hostname = 'localhost'; // The hostname or IP address for your mysql server.
+    public $username = 'username'; // The username for your mysql database.
+    public $password = 'password'; // The password for your mysql database.
+    public $database = 'database'; // The name of the mysql database.
+}
+    

@@ -1,10 +1,14 @@
 <?php
+if (!file_exists('config.php')) {
+    die("Please copy config.php.default to config.php and edit with your database informtaion.");
+}
+include ('config.php');
 
 class EveOreDB {
 	private $_connection;
 	// Store the single instance.
 	private static $_instance;
-	
+	        
 	/**
 	 * Get an instance of the Database.
 	 * @return Database
@@ -20,7 +24,9 @@ class EveOreDB {
 	* Constructor
 	*/
 	public function __construct() {
-		$this->_connection = new MySQLi('localhost', 'mysql_user', 'mysql_password', 'mysql_database');
+                $config = new config();
+                
+		$this->_connection = new MySQLi($config->hostname, $config->username, $config->password, $config->database);
 		//Error handling
 		if (mysqli_connect_error()) {
 			trigger_error('Failed to connect to MySQL: ' . mysqli_connect_error(), E_USER_ERROR);
