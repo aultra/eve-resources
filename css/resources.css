@@ -7,6 +7,40 @@
 
 */
 
+.type-title {
+    border: solid black thick;
+    background-color: darkgray; 
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    padding: 10px;
+    width: 1024px;
+    
+}
+
+.type-groups {
+    border: solid black thick;
+    border-top: none;
+    margin-bottom: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;   
+    padding: 10px;
+    width: 1024px;
+}
+
+.group-title {
+    border: solid black medium;
+    background-color: lightgrey;
+}
+
+.group-resources {
+    border: solid black medium;
+    border-top: none;
+    margin-bottom: 10px;
+}
+
 #resourcesTable {
     width: 90%;
     max-width: 90%;

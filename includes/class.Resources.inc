@@ -74,7 +74,8 @@ class Resources {
             $countAllBuy=1;
         }
         
-        $this->_resources[$resource_array['type']][$resource_array['group']][$resource_array['order']] = array(
+        if ($resource_array['order']==1) $this->_resources[$resource_array['type']][$resource_array['group']]['name'] = $resource_array['name'];
+        $this->_resources[$resource_array['type']][$resource_array['group']]['resources'][$resource_array['order']] = array(
             'id' => $resource_array['id'],
             'name' => $resource_array['name'],
             'volume' => $resource_array['volume'],
@@ -88,9 +89,9 @@ class Resources {
             'corpbuy' => round($sumAllBuy/$countAllBuy,2)
         );
         $this->_resource_id_index[(int)$resource_array['id']] = 
-                                &$this->_resources[$resource_array['type']][$resource_array['group']][$resource_array['order']];
+                                &$this->_resources[$resource_array['type']][$resource_array['group']]['resources'][$resource_array['order']];
         $this->_resource_name_index[strtolower($resource_array['name'])] = 
-                                &$this->_resources[$resource_array['type']][$resource_array['group']][$resource_array['order']];
+                                &$this->_resources[$resource_array['type']][$resource_array['group']]['resources'][$resource_array['order']];
         
     }
     
@@ -117,6 +118,7 @@ class Resources {
         } else {
             echo "<!-- Database last updated ".round((time()-filemtime('last_updated'))/60)." minutes ago. -->";
         }
+        //echo "<!-- ".print_r($this->_resources, TRUE)."-->";
     }
     
     /**
@@ -218,14 +220,13 @@ class Resources {
      * @param array $group
      * @return string
      */
-    public function displayResourceType($type) {
-        echo '<table class="resourceType">';
-        foreach ($type as $resourceGroup_id => $resourceGroup) {
-            echo '<tr id="'.$resourceGroup_id.'">';
-            $this->displayResourceGroup($resourceGroup);
-            echo '</tr>';
+    public function displayResourceGroups($groups) {
+        foreach ($groups as $group_id => $group) {
+            echo '<div id="'.$group['name'].'-group-title" class="group-title">'.$group['name'].'s</div>';
+            echo '<div id="'.$group['name'].'-resources" class="group-resources">';
+            $this->displayResourceGroup($group['resources']);
+            echo '</div>';
         }
-        echo '</table>';
     }
     
     /**
@@ -234,9 +235,7 @@ class Resources {
      */
     public function displayResourceGroup($resourceGroup) {
         foreach($resourceGroup as $resource_id => $resource) {
-            echo '<td id="'.$resource_id.'" class="resourceCell">';
             $this->displayResourceCell($resource);
-            echo '</td>';
         }
     }
     
@@ -311,13 +310,12 @@ class Resources {
     }
     
     public function display() {
-        echo '<table id="resourcesTable">';
-        foreach ($this->_resources as $type_id => $type) {
-            echo '<tr id="'.$type_id.'"><td>';
-            $this->displayResourceType($type);
-            echo '</td></tr>';
+        foreach ($this->_resources as $type => $groups) {
+            echo '<div id="'.$type.'-title" class="type-title">'.$type.'</div>';
+            echo '<div id="'.$type.'-groups" class="type-groups">';
+                $this->displayResourceGroups($groups);
+            echo '</div>';
         }
-        echo '</table>';
     }
 }
 
