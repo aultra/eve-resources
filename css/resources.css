@@ -41,41 +41,26 @@
     margin-bottom: 10px;
 }
 
-#resourcesTable {
-    width: 90%;
-    max-width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-#resourcesTable tr td {
-    border: solid;
-    border-width: 1px;
-    border-color: black;
+.resourceType {
     width: 100%;
 }
 
-#resourcesTable .resourceType {
-    width: 100%;
-}
-
-#resourcesTable .resourceCell {
+.resourceCell {
     width: auto;
 }
 
-#resourcesTable .resourceGroupTable {
+.resourceGroupTable {
     width: 100%;
 }
 
-#resourcesTable .resourceCellTable {
-    border: solid;
-    border-width: 2px;
-    border-color: black;
-    width: 100%;
+.resourceCellTable {
+    border: solid 2px black;
+    width: 32%;
+    margin: 5px;
+    display: inline-table;
 }
 
-#resourcesTable .resourceCellTable th {
+.resourceCellTable th {
     background-color: black;
     color: white;
 

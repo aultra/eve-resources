@@ -222,10 +222,10 @@ class Resources {
      */
     public function displayResourceGroups($groups) {
         foreach ($groups as $group_id => $group) {
-            echo '<div id="'.$group['name'].'-group-title" class="group-title">'.$group['name'].'s</div>';
-            echo '<div id="'.$group['name'].'-resources" class="group-resources">';
+            echo "<div id=\"{$group['name']}-group-title\" class=\"group-title\">{$group['name']}s</div>\n";
+            echo "<div id=\"{$group['name']}-resources\" class=\"group-resources\">\n";
             $this->displayResourceGroup($group['resources']);
-            echo '</div>';
+            echo "</div>\n";
         }
     }
     
@@ -261,7 +261,7 @@ class Resources {
                         '<td>'.$resource[$market_name]['sell'].'</td>'.
                      '</tr>';
             }
-        echo '</table>';
+        echo "</table>\n";
     }
     
     /**
@@ -305,16 +305,16 @@ class Resources {
                             '<td>'.$refinedValues[$market_name]['sell'].'</td>'.
                          '</tr>';
                 }
-            echo '</table>';
+            echo "</table>\n";
         }
     }
     
     public function display() {
         foreach ($this->_resources as $type => $groups) {
-            echo '<div id="'.$type.'-title" class="type-title">'.$type.'</div>';
-            echo '<div id="'.$type.'-groups" class="type-groups">';
+            echo "<div id=\"{$type}-title\" class=\"type-title\">{$type}</div>\n";
+            echo "<div id=\"'{$type}'-groups\" class=\"type-groups\">\n";
                 $this->displayResourceGroups($groups);
-            echo '</div>';
+            echo "</div>\n";
         }
     }
 }
