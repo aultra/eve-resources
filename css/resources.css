@@ -7,42 +7,70 @@
 
 */
 
-#resourcesTable {
-    width: 90%;
-    max-width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-right: 5%;
+body {
+    background-color: black;
+    color: white;
+}
+.type-title {
+    border: solid white thick;
+    background-color: darkgray;
+    color: black;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    padding: 10px;
+    width: 1024px;
+    
 }
 
-#resourcesTable tr td {
-    border: solid;
-    border-width: 1px;
-    border-color: black;
+.type-groups {
+    border: solid white thick;
+    border-top: none;
+    margin-bottom: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;   
+    padding: 10px;
+    width: 1024px;
+}
+
+.group-title {
+    border: solid white medium;
+    background-color: lightgrey;
+    color: black;
+}
+
+.group-resources {
+    border: solid white medium;
+    border-top: none;
+    margin-bottom: 10px;
+}
+
+.resourceType {
     width: 100%;
 }
 
-#resourcesTable .resourceType {
-    width: 100%;
-}
-
-#resourcesTable .resourceCell {
+.resourceCell {
     width: auto;
 }
 
-#resourcesTable .resourceGroupTable {
+.resourceGroupTable {
     width: 100%;
 }
 
-#resourcesTable .resourceCellTable {
-    border: solid;
-    border-width: 2px;
-    border-color: black;
-    width: 100%;
+.resourceCellTable {
+    border: solid 2px black;
+    width: 32%;
+    margin: 5px;
+    display: inline-table;
 }
 
-#resourcesTable .resourceCellTable th {
+.resourceCellTable th {
     background-color: black;
     color: white;
+}
 
+.values-row td {
+    text-align: right;
 }
