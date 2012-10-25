@@ -8,6 +8,6 @@ Installation
 ------------
 
 1. Import resources.sql into a mysql database.
-2. Set mysql_address, mysql_user, mysql_password, mysql_database in class.EveOreDB.tpl.inc and save to class.EveOreDB.inc
+2. Set mysql_address, mysql_user, mysql_password, mysql_database in config.php.tpl and save to config.php
 3. Push to your web server.
 
