@@ -7,9 +7,14 @@
 
 */
 
+body {
+    background-color: black;
+    color: white;
+}
 .type-title {
-    border: solid black thick;
-    background-color: darkgray; 
+    border: solid white thick;
+    background-color: darkgray;
+    color: black;
     margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
@@ -20,7 +25,7 @@
 }
 
 .type-groups {
-    border: solid black thick;
+    border: solid white thick;
     border-top: none;
     margin-bottom: 25px;
     margin-left: auto;
@@ -31,12 +36,13 @@
 }
 
 .group-title {
-    border: solid black medium;
+    border: solid white medium;
     background-color: lightgrey;
+    color: black;
 }
 
 .group-resources {
-    border: solid black medium;
+    border: solid white medium;
     border-top: none;
     margin-bottom: 10px;
 }
@@ -63,5 +69,8 @@
 .resourceCellTable th {
     background-color: black;
     color: white;
+}
 
+.values-row td {
+    text-align: right;
 }

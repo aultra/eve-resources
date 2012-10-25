@@ -194,19 +194,27 @@ class Resources {
      * @param boolean $refined
      * @return array
      */
-    public function getRefinedValues($resource) {
+    public function getMarketValues($resource) {
         if (is_array($resource)) {
             if (!is_null($resource['yields'])) {
-                $resource_values = array();
+                $resource_values = array('raw'=>array(), 'refined'=>array());
+
+                foreach ($this->_markets as $market_id => $market) {
+                    $resource_values['raw'][$market] = array(
+                        'buy' => round($resource[$market]['buy']*(1/$resource['volume']),2), 
+                        'sell' => round($resource[$market]['sell']*(1/$resource['volume'])),2);
+                    $resource_values['refined'][$market] = array('buy'=>0, 'sell'=>0);
+                }
+                $resource_values['raw']['corpbuy']=round($resource['corpbuy']*(1/$resource['volume']),2);
+                $resource_values['refined']['corpbuy']=0;
                 
                 foreach ($resource['yields'] as $key => $quantity) {
                     foreach ($this->_markets as $market_id => $market) {
                         $mineral = $this->_resource_name_index[strtolower($key)];
-
-                        $resource_values[$market]['buy'] =+ round(($quantity * $mineral[$market]['buy'])/$resource['batch'],2);
-                        $resource_values[$market]['sell'] =+ round(($quantity * $mineral[$market]['sell'])/$resource['batch'],2);
+                        $resource_values['refined'][$market]['buy'] += round(($quantity * $mineral[$market]['buy'])/$resource['batch']*(1/$resource['volume']),2);
+                        $resource_values['refined'][$market]['sell'] += round(($quantity * $mineral[$market]['sell'])/$resource['batch']*(1/$resource['volume']),2);
                     }
-                    $resource_values['corpbuy'] =+ round(($quantity * $mineral['corpbuy'])/$resource['batch'],2);
+                    $resource_values['refined'] ['corpbuy'] += round((($quantity * $mineral['corpbuy'])/$resource['batch'])*0.95*(1/$resource['volume']),2);
                 }
                 
                 return $resource_values;
@@ -224,21 +232,21 @@ class Resources {
         foreach ($groups as $group_id => $group) {
             echo "<div id=\"{$group['name']}-group-title\" class=\"group-title\">{$group['name']}s</div>\n";
             echo "<div id=\"{$group['name']}-resources\" class=\"group-resources\">\n";
-            $this->displayResourceGroup($group['resources']);
+            foreach($group as $resource_id => $resource) {
+                if (isnull($resource['yields'])) {
+                    $this->displayMineralResourceCell ($resource);
+                } else {
+                    $this->displayResourceCell($resource);
+                }
+            }
             echo "</div>\n";
         }
     }
     
     /**
-     * This function displays each of the various groups of the resource type.
-     * @param array $resourceGroup
+     * This function will output the table for unrefineable materials.
+     * @param array $resource
      */
-    public function displayResourceGroup($resourceGroup) {
-        foreach($resourceGroup as $resource_id => $resource) {
-            $this->displayResourceCell($resource);
-        }
-    }
-    
     public function displayMineralResourceCell($resource){
         echo '<table id="'.$resource['id'].'" class="resourceCellTable">';
             echo '<tr>'.
@@ -251,7 +259,7 @@ class Resources {
                  '</tr>';
             echo '<tr>'.
                     '<td>Phoenix</td>'.
-                    '<td>'.round($resource['corpbuy']*.95, 2).'</td>'.
+                    "<td>{$resource['corpbuy']}</td>".
                     '<td style="background-color=black;"><!--Intentionally left blank--></td>'.
                  '</tr>';
             foreach ($this->_markets as $market_id => $market_name) {
@@ -272,10 +280,10 @@ class Resources {
     public function displayResourceCell($resource) {
         if (is_null($resource['yields'])) $this->displayMineralResourceCell ($resource);
         else {
-            $refinedValues = $this->getRefinedValues($resource);
+            $values = $this->getMarketValues($resource);
             echo '<table id="'.$resource['id'].'" class="resourceCellTable">';
                 echo '<tr>'.
-                        '<th colspan="5">'. $resource['name'].'</th>'.
+                        '<th colspan="5">'.$resource['name'].'</th>'.
                      '</tr>';
                 echo '<tr>'.
                         '<th><!--Intentionally left blank--></th>'.
@@ -289,20 +297,20 @@ class Resources {
                         '<th>Buy</th>'.
                         '<th>Sell</th>'.
                      '</tr>';
-                echo '<tr>'.
+                echo '<tr class="values-row">'.
                         '<td>Phoenix</td>'.
-                        '<td>'.$resource['corpbuy'].'</td>'.
+                        '<td>'.money_format('%#4.2n', $values['raw']['corpbuy']).'</td>'.
                         '<td style="background-color: black;"><!--Intentionally left blank--></td>'.
-                        '<td>'. $refinedValues['corpbuy'] .'</td>'.
+                        '<td>'.money_format("%#4.2n", $values['refined']['corpbuy']).'</td>'.
                         '<td style="background-color: black;"><!--Intentionally left blank--></td>'.
                      '</tr>';
                 foreach ($this->_markets as $market_id => $market_name) {
-                    echo '<tr>'.
+                    echo '<tr class="values-row">'.
                             '<td>'.ucwords($market_name).'</td>'.
-                            '<td>'.$resource[$market_name]['buy'].'</td>'.
-                            '<td>'.$resource[$market_name]['sell'].'</td>'.
-                            '<td>'.$refinedValues[$market_name]['buy'].'</td>'.
-                            '<td>'.$refinedValues[$market_name]['sell'].'</td>'.
+                            '<td>'.money_format("%#4.2n", $values['raw'][$market_name]['buy']).'</td>'.
+                            '<td>'.money_format("%#4.2n", $values['raw'][$market_name]['sell']).'</td>'.
+                            '<td>'.money_format("%#4.2n", $values['refined'][$market_name]['buy']).'</td>'.
+                            '<td>'.money_format("%#4.2n", $values['refined'][$market_name]['sell']).'</td>'.
                          '</tr>';
                 }
             echo "</table>\n";
