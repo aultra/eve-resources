@@ -12,7 +12,7 @@ body {
     color: white;
 }
 .type-title {
-    border: solid white thick;
+    border: solid #555 thick;
     background-color: darkgray;
     color: black;
     margin-top: 25px;
@@ -25,7 +25,7 @@ body {
 }
 
 .type-groups {
-    border: solid white thick;
+    border: solid #555 thick;
     border-top: none;
     margin-bottom: 25px;
     margin-left: auto;
@@ -36,14 +36,15 @@ body {
 }
 
 .group-title {
-    border: solid white medium;
+    border: solid #999 medium;
     background-color: lightgrey;
     color: black;
 }
 
 .group-resources {
-    border: solid white medium;
+    border: solid #999 medium;
     border-top: none;
+    padding: 5px;
     margin-bottom: 10px;
 }
 
@@ -51,26 +52,114 @@ body {
     width: 100%;
 }
 
-.resourceCell {
-    width: auto;
-}
-
 .resourceGroupTable {
     width: 100%;
 }
 
-.resourceCellTable {
-    border: solid 2px black;
-    width: 32%;
-    margin: 5px;
-    display: inline-table;
+.resourceCell {
+    border: solid 2px #555;
+    border-bottom: none;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
 }
 
-.resourceCellTable th {
-    background-color: black;
-    color: white;
+.resourceCell .values-row:last-child {
+    border-bottom: solid #555 2px;
 }
 
-.values-row td {
+.refineable {
+    width: 300px;
+}
+
+.unrefineable {
+    width: 150px;
+}
+
+.values-row {
+    height: 20px;
+    border-top: dotted #555 1px;
     text-align: right;
+}
+
+.values-row span {
+    display: inline-block;
+    width: 66px; 
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.left-column {
+    margin-top: 53px;
+    float: left;
+    width: 85px;
+    background-color: #555;
+    margin-left: auto;
+}
+
+.left-column :last-child {
+    border-bottom: solid #555 2px;
+}
+
+.left-column div {
+    border: black dotted 1px; 
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    height: 20px;
+}
+
+.short-left-column {
+    margin-top: 36px;
+}
+
+.phoenix-line {
+    font-weight: 600;
+    border-top: none;
+}
+
+.resource-title{
+    text-align: center;
+    font-size: 16px;
+    font-weight: 900;
+    height: 20px;
+    background-color: #555;
+}
+
+.resource-column-head {
+    height: 17px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.resource-column-head span {
+    width: 49%;
+    display: inline-block;
+    text-align: center;
+    
+}
+
+.buy-sell-line {
+    height: 13px;
+    font-size: 11px;
+    text-align: center;
+    border-bottom: solid #555 1px;
+}
+
+.buy-sell-line span {
+    width: 74px;
+    display: inline-block;
+}
+
+.dotted-left-border{
+    border-left: dotted #555 1px;
+}
+
+.solid-left-border {
+    border-left: solid #555 1px;
+}
+
+.solid-bottom-border {
+    border-bottom: solid #555 1px;
 }

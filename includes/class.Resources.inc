@@ -194,31 +194,31 @@ class Resources {
      * @param boolean $refined
      * @return array
      */
-    public function getMarketValues($resource) {
+    public function getVolumeValues($resource, $volume = 1) {
         $resource_values = array(
             'raw' => NULL, 
             'refined' => NULL
         );
         foreach ($this->_markets as $market_id => $market) {
             $resource_values['raw'][$market] = array(
-                'buy' => round(($resource[$market]['buy']*(1/$resource['volume'])), 2), 
-                'sell' => round(($resource[$market]['sell']*(1/$resource['volume'])), 2)
+                'buy' => round(($resource[$market]['buy']*($volume/$resource['volume'])), 2), 
+                'sell' => round(($resource[$market]['sell']*($volume/$resource['volume'])), 2)
             );
             if (!is_null($resource['yields'])) {
                 $resource_values['refined'][$market] = array('buy'=>0, 'sell'=>0);
             }
         }
-        $resource_values['raw']['corpbuy']=round($resource['corpbuy']*(1/$resource['volume']),2);
+        $resource_values['raw']['corpbuy']=round($resource['corpbuy']/**($volume/$resource['volume'])*/,2);
         if (!is_null($resource['yields'])) {
             $resource_values['refined']['corpbuy']=0;
 
             foreach ($resource['yields'] as $key => $quantity) {
                 foreach ($this->_markets as $market_id => $market) {
                     $mineral = $this->_resource_name_index[strtolower($key)];
-                    $resource_values['refined'][$market]['buy'] += round(($quantity * $mineral[$market]['buy'])/$resource['batch']*(1/$resource['volume']),2);
-                    $resource_values['refined'][$market]['sell'] += round(($quantity * $mineral[$market]['sell'])/$resource['batch']*(1/$resource['volume']),2);
+                    $resource_values['refined'][$market]['buy'] += round(($quantity * $mineral[$market]['buy'])/$resource['batch']*($volume/$resource['volume']),2);
+                    $resource_values['refined'][$market]['sell'] += round(($quantity * $mineral[$market]['sell'])/$resource['batch']*($volume/$resource['volume']),2);
                 }
-                $resource_values['refined'] ['corpbuy'] += round((($quantity * $mineral['corpbuy'])/$resource['batch'])*0.95*(1/$resource['volume']),2);
+                $resource_values['refined'] ['corpbuy'] += round((($quantity * $mineral['corpbuy'])/$resource['batch'])*0.95/**($volume/$resource['volume'])*/,2);
             }
         }
         return $resource_values;
@@ -231,12 +231,20 @@ class Resources {
      */
     public function displayResourceGroups($groups) {
         foreach ($groups as $group_id => $group) {
-            echo "<div id=\"{$group['name']}-group-title\" class=\"group-title\">{$group['name']}s</div>\n";
-            echo "<div id=\"{$group['name']}-resources\" class=\"group-resources\">\n";
+            if ($group_id != -1) {
+                echo "<div id=\"{$group['name']}-group-title\" class=\"group-title\">{$group['name']}s</div>\n";
+                echo "<div id=\"{$group['name']}-resources\" class=\"group-resources\">\n";
+            }
+            echo "<span id=\"{$group['name']}-left-column\" class=\"left-column".($group_id == -1 ? ' short-left-column' : '')."\">\n";
+                echo "<div class=\"phoenix-line\">Phoenix (ea)</div>";
+                foreach ($this->_markets as $market_id => $market) {
+                    echo "<div>".ucwords($market)." ".($group_id != -1 ? '(m3)' : '(ea)')."</div>";
+                }
+            echo "</span>\n";
             foreach($group['resources'] as $resource_id => $resource) {
                 $this->displayResourceCell($resource);
             }
-            echo "</div>\n";
+            if ($group_id != -1) echo "</div>\n";
         }
     }
     
@@ -246,44 +254,41 @@ class Resources {
      * @return string 
      */
     public function displayResourceCell($resource) {
-        $values = $this->getMarketValues($resource);
-        echo '<table id="'.$resource['id'].'" class="resourceCellTable">';
-            echo '<tr>'.
-                    '<th colspan="5">'.$resource['name'].'</th>'.
-                 '</tr>';
-            echo '<tr>'.
-                    '<th><!--Intentionally left blank--></th>'.
-                    '<th colspan="2">Raw Ore</th>'.
-                    (!is_null($values['refined']) ?
-                    '<th colspan="2">Refined</th>' : '').
-                 '</tr>';
-            echo '<tr>'.
-                    '<th><!--Intentionally left blank--></th>'.
-                    '<th>Buy</th>'.
-                    '<th>Sell</th>'.
+        if (!is_null($resource['yields'])) {
+            $values = $this->getVolumeValues($resource);
+        } else {
+            $values = $this->getVolumeValues($resource, $resource['volume']);
+        }
+        echo '<span id="'.$resource['id'].'" class="resourceCell '.(!is_null($values['refined']) ? "refineable" : "unrefineable")."\">\n";
+            echo "<div class=\"resource-title\">{$resource['name']}</div>\n";
+            if (!is_null($resource['yields'])) echo '<div class="resource-column-head">'.
+                    '<span>Raw Ore</span>'.
+                    '<span class="solid-left-border">Refined</span>'.
+                 "</div>\n";
+            echo '<div class="buy-sell-line">'.
+                    '<span>Buy</span>'.
+                    '<span class="dotted-left-border">Sell</span>'.
                     (!is_null($values['refined']) ? 
-                    '<th>Buy</th>'.
-                    '<th>Sell</th>' : '').
-                 '</tr>';
-            echo '<tr class="values-row">'.
-                    '<td>Phoenix</td>'.
-                    '<td>'.money_format('%#4.2n', $values['raw']['corpbuy']).'</td>'.
-                    '<td style="background-color: black;"><!--Intentionally left blank--></td>'.
+                    '<span class="solid-left-border">Buy</span>'.
+                    '<span class="dotted-left-border">Sell</span>' : '').
+                 "</div>\n";
+            echo '<div class="values-row phoenix-line">'.
+                    '<span>'.money_format('%#4.2n', $values['raw']['corpbuy']).'</span>'.
+                    '<span class="dotted-left-border"><!-- Empty --></span>'.
                     (!is_null($values['refined']) ? 
-                    '<td>'.money_format("%#4.2n", $values['refined']['corpbuy']).'</td>'.
-                    '<td style="background-color: black;"><!--Intentionally left blank--></td>' : '').
-                 '</tr>';
+                    '<span class="solid-left-border">'.money_format("%#4.2n", $values['refined']['corpbuy']).'</span>' : '').
+                    '<span class="dotted-left-border"></span>'.
+                 "</div>\n";
             foreach ($this->_markets as $market_id => $market_name) {
-                echo '<tr class="values-row">'.
-                        '<td>'.ucwords($market_name).'</td>'.
-                        '<td>'.money_format("%#4.2n", $values['raw'][$market_name]['buy']).'</td>'.
-                        '<td>'.money_format("%#4.2n", $values['raw'][$market_name]['sell']).'</td>'.
+                echo '<div class="values-row">'.
+                        '<span>'.money_format("%#4.2n", $values['raw'][$market_name]['buy']).'</span>'.
+                        '<span class="dotted-left-border">'.money_format("%#4.2n", $values['raw'][$market_name]['sell']).'</span>'.
                         (!is_null($values['refined']) ? 
-                        '<td>'.money_format("%#4.2n", $values['refined'][$market_name]['buy']).'</td>'.
-                        '<td>'.money_format("%#4.2n", $values['refined'][$market_name]['sell']).'</td>' : '').
-                     '</tr>';
+                        '<span class="solid-left-border">'.money_format("%#4.2n", $values['refined'][$market_name]['buy']).'</span>'.
+                        '<span class="dotted-left-border">'.money_format("%#4.2n", $values['refined'][$market_name]['sell']).'</span>' : '').
+                     "</div>\n";
             }
-        echo "</table>\n";
+        echo "</span>\n";
     }
     
     public function display() {
