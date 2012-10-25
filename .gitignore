@@ -1,6 +1,4 @@
 # Ignore configuration file #
 #############################
 config.php
-nbproject
 last_updated
-/config.php
