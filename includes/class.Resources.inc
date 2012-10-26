@@ -19,6 +19,12 @@ class Resources {
     private $_isloaded = FALSE;
     
     /**
+     * Construct function to automatically load new data into the class object.
+     */
+    function __construct() {
+        $this->loadResources();
+    }
+    /**
      * Function to turn an associative array into a string.
      * @param array $arr
      * @return string
